@@ -5,7 +5,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="Controllers.WniosekController"
+      fx:controller="Controllers.WizytaController"
       spacing="10">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
@@ -13,20 +13,20 @@
 
     <HBox spacing="10">
         <Label text="Podatnik:"/>
-        <ComboBox fx:id="podatnikCombo" prefWidth="200"/>
-        <Label text="Treść:"/>
-        <TextField fx:id="trescField" promptText="Treść wniosku" prefWidth="300"/>
-        <Button text="Złóż wniosek" onAction="#onZloz"/>
+        <ComboBox fx:id="podatnikCombo" prefWidth="180"/>
+        <Label text="Pracownik:"/>
+        <ComboBox fx:id="pracownikCombo" prefWidth="180"/>
+        <Label text="Data:"/>
+        <DatePicker fx:id="datePicker"/>
+        <Button text="Umów" onAction="#onUmow"/>
     </HBox>
 
     <TableView fx:id="table" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="200"/>
             <TableColumn fx:id="podatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
-            <TableColumn fx:id="trescColumn" text="Treść" prefWidth="200"/>
-            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="pracownikIdColumn" text="Pracownik ID" prefWidth="150"/>
             <TableColumn fx:id="dataColumn" text="Data" prefWidth="120"/>
-            <TableColumn fx:id="actionColumn" text="Akcja" prefWidth="150"/>
         </columns>
     </TableView>
 </VBox>

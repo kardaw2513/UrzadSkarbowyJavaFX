@@ -1,49 +1,57 @@
 package Services;
 
 import Model.Wizyta;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class WizytaServiceTest {
     private WizytaService wizytaService;
-    private final String pid = "p3";
-    private final String pracId = "prac1";
 
-    @BeforeEach
-    void setUp() throws Exception {
-        System.setProperty("db.url", "jdbc:sqlite:file:memdb1?mode=memory&cache=shared");
-        DatabaseManager.closeConnection();
+    @BeforeAll
+    void init() throws SQLException {
         DatabaseManager.initDatabase();
-
         wizytaService = new WizytaService();
     }
 
-    @AfterEach
-    void tearDown() {
-        DatabaseManager.closeConnection();
+    @Test
+    void umowWizyte_zwiększaLiczbęWizytDlaPodatnika() throws SQLException {
+        String pid = UUID.randomUUID().toString();
+        String pracId = UUID.randomUUID().toString();
+        // stan początkowy wizyt dla tego podatnika
+        List<Wizyta> beforeList = wizytaService.wizytyDlaPodatnika(pid);
+        int before = beforeList.size();
+
+        Wizyta w = wizytaService.umowWizyte(pid, LocalDate.now().plusDays(1), pracId);
+        assertNotNull(w);
+        List<Wizyta> afterList = wizytaService.wizytyDlaPodatnika(pid);
+        assertEquals(before + 1, afterList.size(), "Po umówieniu wizyty liczba wizyt dla podatnika powinna wzrosnąć o 1");
+        Wizyta found = afterList.stream().filter(x -> x.getId().equals(w.getId())).findFirst().orElse(null);
+        assertNotNull(found);
+        assertEquals(pracId, found.getPracownikId());
     }
 
     @Test
-    void umowWizyte_i_wizytyDlaPodatnika() throws SQLException {
-        Wizyta w = wizytaService.umowWizyte(pid, LocalDate.now(), pracId);
-        List<Wizyta> lista = wizytaService.wizytyDlaPodatnika(pid);
-        assertEquals(1, lista.size());
-        assertEquals(pracId, lista.get(0).getPracownikId());
-        assertEquals(w.getId(), lista.get(0).getId());
-    }
+    void wszystkieWizyty_zwracaPoprawnąLiczbęPoDodaniu() throws SQLException {
+        // ogólna liczba wizyt przed dodaniem
+        List<Wizyta> beforeAll = wizytaService.wszystkieWizyty();
+        int before = beforeAll.size();
 
-    @Test
-    void wszystkieWizyty_zwracaWszystkie() throws SQLException {
-        wizytaService.umowWizyte(pid, LocalDate.now(), pracId);
-        wizytaService.umowWizyte("inny", LocalDate.now().plusDays(1), pracId);
-        List<Wizyta> wszystkie = wizytaService.wszystkieWizyty();
-        assertEquals(2, wszystkie.size());
+        String pidA = UUID.randomUUID().toString();
+        String pidB = UUID.randomUUID().toString();
+        String pracId = UUID.randomUUID().toString();
+        wizytaService.umowWizyte(pidA, LocalDate.now().plusDays(2), pracId);
+        wizytaService.umowWizyte(pidB, LocalDate.now().plusDays(3), pracId);
+
+        List<Wizyta> afterAll = wizytaService.wszystkieWizyty();
+        assertEquals(before + 2, afterAll.size(), "Po dodaniu 2 wizyt ogólna liczba powinna wzrosnąć o 2");
     }
 }

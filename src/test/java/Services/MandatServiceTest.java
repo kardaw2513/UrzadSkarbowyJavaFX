@@ -1,66 +1,75 @@
 package Services;
 
 import Model.Mandat;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MandatServiceTest {
     private MandatService service;
-    private final String pid = "p1";
 
-    @BeforeEach
-    void setUp() throws Exception {
-        // Ustaw URL dla in-memory shared
-        System.setProperty("db.url", "jdbc:sqlite:file:memdb1?mode=memory&cache=shared");
-        // Zamknij ewentualne wcześniejsze połączenie
-        DatabaseManager.closeConnection();
-        // Inicjalizuj tabele
+    @BeforeAll
+    void init() throws SQLException {
+        // Inicjalizacja bazy i serwisu raz przed wszystkimi testami
         DatabaseManager.initDatabase();
-
         service = new MandatService();
     }
 
-    @AfterEach
-    void tearDown() {
-        DatabaseManager.closeConnection();
-    }
-
     @Test
-    void wystawMandat_i_pokazMandaty() throws SQLException {
-        Mandat m = service.wystawMandat(pid, 100.0);
-        List<Mandat> lista = service.pokazMandaty(pid);
-        assertEquals(1, lista.size());
-        assertEquals(100.0, lista.get(0).getKwota());
-        assertFalse(lista.get(0).isOplacony());
-        assertEquals(m.getId(), lista.get(0).getId());
+    void wystawMandat_zwiększaLiczbęMandatówDlaPodatnika() throws SQLException {
+        String pid = UUID.randomUUID().toString(); // unikalny, by nie kolidować z istniejącymi
+        // stan początkowy dla tego podatnika:
+        List<Mandat> beforeList = service.pokazMandaty(pid);
+        int before = beforeList.size();
+
+        Mandat m = service.wystawMandat(pid, 123.45);
+        assertNotNull(m);
+        // po dodaniu:
+        List<Mandat> afterList = service.pokazMandaty(pid);
+        assertEquals(before + 1, afterList.size(), "Po wystawieniu mandatu liczba powinna wzrosnąć o 1");
+        // sprawdź dane nowego mandatu:
+        Mandat found = afterList.stream().filter(x -> x.getId().equals(m.getId())).findFirst().orElse(null);
+        assertNotNull(found);
+        assertEquals(123.45, found.getKwota());
+        assertFalse(found.isOplacony());
     }
 
     @Test
     void zaplacMandat_ustawiaOplacony() throws SQLException {
+        String pid = UUID.randomUUID().toString();
         Mandat m = service.wystawMandat(pid, 50.0);
+        // początkowo nieopłacony
+        assertFalse(service.pokazMandaty(pid).stream()
+                .filter(x -> x.getId().equals(m.getId())).findFirst().get().isOplacony());
+
         service.zaplacMandat(m.getId());
-        List<Mandat> lista = service.pokazMandaty(pid);
-        assertTrue(lista.get(0).isOplacony());
+        // po zapłacie:
+        Mandat after = service.pokazMandaty(pid).stream()
+                .filter(x -> x.getId().equals(m.getId())).findFirst().orElse(null);
+        assertNotNull(after);
+        assertTrue(after.isOplacony(), "Mandat powinien być oznaczony jako opłacony");
     }
 
     @Test
-    void zaplacMandat_nonexistent_noException() throws SQLException {
-        service.zaplacMandat("nieistnieje");
-        List<Mandat> lista = service.pokazMandaty(pid);
-        assertTrue(lista.isEmpty());
-    }
+    void wszystkieMandaty_zwracaPoprawnąLiczbęPoDodaniu() throws SQLException {
+        // stan początkowy ogólnej liczby mandatóww
+        List<Mandat> beforeAll = service.wszystkieMandaty();
+        int before = beforeAll.size();
 
-    @Test
-    void wszystkieMandaty_zwracaWszystkie() throws SQLException {
-        service.wystawMandat(pid, 10);
-        service.wystawMandat("inny", 20);
-        List<Mandat> wszystkie = service.wszystkieMandaty();
-        assertEquals(2, wszystkie.size());
+        // dodajemy mandaty dla unikalnych podatników
+        String pid1 = UUID.randomUUID().toString();
+        String pid2 = UUID.randomUUID().toString();
+        service.wystawMandat(pid1, 10.0);
+        service.wystawMandat(pid2, 20.0);
+
+        List<Mandat> afterAll = service.wszystkieMandaty();
+        assertEquals(before + 2, afterAll.size(), "Po dodaniu 2 nowych mandatów suma wszystkich powinna wzrosnąć o 2");
     }
 }

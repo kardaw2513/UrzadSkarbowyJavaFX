@@ -1,46 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox spacing="10" padding="10" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.RaportController">
-    <TitledPane text="Mandaty">
-        <VBox spacing="5">
-            <CheckBox fx:id="onlyPaidCheck" text="Tylko opłacone" onAction="#onFilterMandaty"/>
-            <TableView fx:id="mandatTable">
-                <columns>
-                    <TableColumn text="ID" fx:id="midColumn"/>
-                    <TableColumn text="Podatnik ID" fx:id="mpodatnikIdColumn"/>
-                    <TableColumn text="Kwota" fx:id="mkwotaColumn"/>
-                    <TableColumn text="Opłacony" fx:id="moplaconyColumn"/>
-                    <TableColumn text="Data" fx:id="mdataColumn"/>
-                </columns>
-            </TableView>
-        </VBox>
-    </TitledPane>
-    <TitledPane text="Wizyty">
-        <TableView fx:id="wizytaTable">
-            <columns>
-                <TableColumn text="ID" fx:id="widColumn"/>
-                <TableColumn text="Podatnik ID" fx:id="wpodatnikIdColumn"/>
-                <TableColumn text="Pracownik ID" fx:id="wpracownikIdColumn"/>
-                <TableColumn text="Data" fx:id="wdataColumn"/>
-            </columns>
-        </TableView>
-    </TitledPane>
-    <TitledPane text="Wnioski">
-        <VBox spacing="5">
-            <HBox spacing="5">
-                <Label text="Status:"/>
-                <ChoiceBox fx:id="statusChoice" onAction="#onFilterWnioski"/>
-            </HBox>
-            <TableView fx:id="wniosekTable">
-                <columns>
-                    <TableColumn text="ID" fx:id="zidColumn"/>
-                    <TableColumn text="Podatnik ID" fx:id="zpodatnikIdColumn"/>
-                    <TableColumn text="Treść" fx:id="ztrescColumn"/>
-                    <TableColumn text="Status" fx:id="zstatusColumn"/>
-                    <TableColumn text="Data" fx:id="zdataColumn"/>
-                </columns>
-            </TableView>
-        </VBox>
-    </TitledPane>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.RaportController"
+      spacing="10">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <!-- Raport mandatów -->
+    <HBox spacing="10">
+        <Label text="Mandaty:"/>
+        <CheckBox fx:id="onlyPaidCheck" text="Tylko opłacone" onAction="#onFilterMandaty"/>
+    </HBox>
+    <TableView fx:id="mandatTable" prefHeight="150">
+        <columns>
+            <TableColumn fx:id="midColumn" text="ID" prefWidth="200"/>
+            <TableColumn fx:id="mpodatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
+            <TableColumn fx:id="mkwotaColumn" text="Kwota" prefWidth="100"/>
+            <TableColumn fx:id="moplaconyColumn" text="Opłacony" prefWidth="100"/>
+            <TableColumn fx:id="mdataColumn" text="Data" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+    <Separator/>
+
+    <!-- Raport wizyt -->
+    <Label text="Wizyty:"/>
+    <TableView fx:id="wizytaTable" prefHeight="150">
+        <columns>
+            <TableColumn fx:id="widColumn" text="ID" prefWidth="200"/>
+            <TableColumn fx:id="wpodatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
+            <TableColumn fx:id="wpracownikIdColumn" text="Pracownik ID" prefWidth="150"/>
+            <TableColumn fx:id="wdataColumn" text="Data" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+    <Separator/>
+
+    <!-- Raport wniosków -->
+    <HBox spacing="10">
+        <Label text="Wnioski, status:"/>
+        <ChoiceBox fx:id="statusChoice" onAction="#onFilterWnioski"/>
+    </HBox>
+    <TableView fx:id="wniosekTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="zidColumn" text="ID" prefWidth="200"/>
+            <TableColumn fx:id="zpodatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
+            <TableColumn fx:id="ztrescColumn" text="Treść" prefWidth="200"/>
+            <TableColumn fx:id="zstatusColumn" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="zdataColumn" text="Data" prefWidth="120"/>
+        </columns>
+    </TableView>
 </VBox>

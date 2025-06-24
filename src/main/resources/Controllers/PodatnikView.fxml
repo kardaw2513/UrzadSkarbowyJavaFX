@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox spacing="10" padding="10" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.PodatnikController">
-    <HBox spacing="5">
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.PodatnikController"
+      spacing="10">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <HBox spacing="10">
+        <Label text="Imię:"/>
         <TextField fx:id="imieField" promptText="Imię"/>
+        <Label text="Nazwisko:"/>
         <TextField fx:id="nazwiskoField" promptText="Nazwisko"/>
         <Button text="Dodaj" onAction="#onAddPodatnik"/>
     </HBox>
-    <TableView fx:id="table">
+
+    <TableView fx:id="table" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn text="ID" fx:id="idColumn"/>
-            <TableColumn text="Imię" fx:id="imieColumn"/>
-            <TableColumn text="Nazwisko" fx:id="nazwiskoColumn"/>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="250"/>
+            <TableColumn fx:id="imieColumn" text="Imię" prefWidth="150"/>
+            <TableColumn fx:id="nazwiskoColumn" text="Nazwisko" prefWidth="150"/>
         </columns>
     </TableView>
 </VBox>

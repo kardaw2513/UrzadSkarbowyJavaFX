@@ -1,32 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MainController">
-    <top>
-        <Label text="Urzad Skarbowy System" style="-fx-font-size: 18px; -fx-padding: 10;"/>
-    </top>
-    <center>
-        <TabPane fx:id="tabPane">
-            <tabs>
-                <Tab text="Podatnicy">
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.MainController"
+      spacing="10">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <Label text="Urzad Skarbowy" style="-fx-font-size: 18px;"/>
+
+    <TabPane VBox.vgrow="ALWAYS">
+        <tabs>
+            <Tab text="Podatnicy">
+                <content>
                     <fx:include source="PodatnikView.fxml"/>
-                </Tab>
-                <Tab text="Pracownicy">
+                </content>
+            </Tab>
+            <Tab text="Pracownicy">
+                <content>
                     <fx:include source="PracownikView.fxml"/>
-                </Tab>
-                <Tab text="Mandaty">
+                </content>
+            </Tab>
+            <Tab text="Mandaty">
+                <content>
                     <fx:include source="MandatView.fxml"/>
-                </Tab>
-                <Tab text="Wizyty">
+                </content>
+            </Tab>
+            <Tab text="Wizyty">
+                <content>
                     <fx:include source="WizytaView.fxml"/>
-                </Tab>
-                <Tab text="Wnioski">
+                </content>
+            </Tab>
+            <Tab text="Wnioski">
+                <content>
                     <fx:include source="WniosekView.fxml"/>
-                </Tab>
-                <Tab text="Raporty">
+                </content>
+            </Tab>
+            <Tab text="Raporty">
+                <content>
                     <fx:include source="RaportView.fxml"/>
-                </Tab>
-            </tabs>
-        </TabPane>
-    </center>
-</BorderPane>
+                </content>
+            </Tab>
+        </tabs>
+    </TabPane>
+</VBox>
