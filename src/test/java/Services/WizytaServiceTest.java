@@ -1,7 +1,7 @@
-// src/test/java/Services/WizytaServiceTest.java
 package Services;
 
 import Model.Wizyta;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +18,20 @@ public class WizytaServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
+        System.out.println("[WizytaServiceTest] @BeforeEach - reset bazy");
         TestUtils.resetDatabaseManagerConnection();
-        // Dodaj wymagane Podatnik i Pracownik w bazie, bo FK może być nieegzekwowane przez SQLite domyślnie,
-        // ale jeśli chcesz walidować istnienie, utwórz odpowiednie rekordy.
-        // W tym przykładzie nie sprawdzamy istnienia, więc wystarczy serwis.
         wizytaService = new WizytaService();
     }
 
+//    @AfterEach
+//    void tearDown() {
+//        System.out.println("[WizytaServiceTest] @AfterEach - zamykam połączenie");
+//        TestUtils.closeDatabaseManagerConnection();
+//    }
+
     @Test
     void umowWizyte_i_wizytyDlaPodatnika() throws SQLException {
+        System.out.println("[WizytaServiceTest] test umowWizyte_i_wizytyDlaPodatnika");
         Wizyta w = wizytaService.umowWizyte(pid, LocalDate.now(), pracId);
         List<Wizyta> lista = wizytaService.wizytyDlaPodatnika(pid);
         assertEquals(1, lista.size());
@@ -36,6 +41,7 @@ public class WizytaServiceTest {
 
     @Test
     void wszystkieWizyty_zwracaWszystkie() throws SQLException {
+        System.out.println("[WizytaServiceTest] test wszystkieWizyty_zwracaWszystkie");
         wizytaService.umowWizyte(pid, LocalDate.now(), pracId);
         wizytaService.umowWizyte("inny", LocalDate.now().plusDays(1), pracId);
         List<Wizyta> wszystkie = wizytaService.wszystkieWizyty();

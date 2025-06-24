@@ -1,13 +1,13 @@
-// src/test/java/Services/WniosekServiceTest.java
 package Services;
 
 import Model.Wniosek;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +20,11 @@ public class WniosekServiceTest {
         TestUtils.resetDatabaseManagerConnection();
         wniosekService = new WniosekService();
     }
+
+//    @AfterEach
+//    void tearDown() {
+//        TestUtils.closeDatabaseManagerConnection();
+//    }
 
     @Test
     void zlozWniosek_i_pobierzWniosek() throws SQLException {

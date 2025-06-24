@@ -1,4 +1,3 @@
-// src/main/java/Controllers/MainController.java
 package Controllers;
 
 import Services.DatabaseManager;
@@ -11,11 +10,12 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("[MainController] initialize - initDatabase");
         try {
             DatabaseManager.initDatabase();
         } catch (SQLException e) {
+            System.err.println("[MainController] initDatabase error: " + e.getMessage());
             e.printStackTrace();
-            // Można tu dodać alert informujący o błędzie inicjalizacji DB
         }
     }
 }

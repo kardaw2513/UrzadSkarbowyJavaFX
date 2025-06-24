@@ -1,7 +1,7 @@
-// src/test/java/Services/MandatServiceTest.java
 package Services;
 
 import Model.Mandat;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,14 +12,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MandatServiceTest {
     private MandatService service;
-    private String pid = "p1";
+    private final String pid = "p1";
 
     @BeforeEach
     void setUp() throws Exception {
-        // Reset bazy w pamięci
         TestUtils.resetDatabaseManagerConnection();
         service = new MandatService();
     }
+
+//    @AfterEach
+//    void tearDown() {
+//        TestUtils.closeDatabaseManagerConnection();
+//    }
 
     @Test
     void wystawMandat_i_pokazMandaty() throws SQLException {
@@ -41,9 +45,7 @@ public class MandatServiceTest {
 
     @Test
     void zaplacMandat_nonexistent_noException() throws SQLException {
-        // wywołanie na nieistniejącym ID nie rzuca wyjątku
         service.zaplacMandat("nieistnieje");
-        // nadal pusta lista
         List<Mandat> lista = service.pokazMandaty(pid);
         assertTrue(lista.isEmpty());
     }

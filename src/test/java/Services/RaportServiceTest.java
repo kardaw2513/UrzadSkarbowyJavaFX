@@ -1,9 +1,9 @@
-// src/test/java/Services/RaportServiceTest.java
 package Services;
 
 import Model.Mandat;
 import Model.Wizyta;
 import Model.Wniosek;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +29,11 @@ public class RaportServiceTest {
         vs = new WizytaService();
         rs = new RaportService(ms, ws, vs);
     }
+
+//    @AfterEach
+//    void tearDown() {
+//        TestUtils.closeDatabaseManagerConnection();
+//    }
 
     @Test
     void raportMandatow_filtrowanieOplaconych() throws SQLException {
