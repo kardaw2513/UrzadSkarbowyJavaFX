@@ -21,4 +21,8 @@ public class Podatnik {
     public String getId() { return id; }
     public String getImie() { return imie; }
     public String getNazwisko() { return nazwisko; }
+
+    public String toString(){
+        return  imie+" "+nazwisko;
+    }
 }

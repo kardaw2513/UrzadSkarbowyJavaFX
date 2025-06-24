@@ -137,3 +137,16 @@
 .scroll-bar .thumb:hover {
     -fx-background-color: #666;
 }
+
+/* Poprawa kontrastu dla zaznaczonych wierszy w TableView */
+.table-row-cell:filled:selected, .table-row-cell:filled:selected:hover {
+    -fx-background-color: #5a9bd5; /* ciemniejszy niebieski */
+    -fx-text-fill: black; /* tekst czarny, lepiej widoczny */
+}
+
+/* Poprawa wyglądu komórek, gdy zaznaczone */
+.table-cell:filled:selected, .table-cell:filled:selected:hover {
+    -fx-background-color: #5a9bd5;
+    -fx-text-fill: black;
+}
+
