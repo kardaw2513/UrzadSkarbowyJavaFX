@@ -13,34 +13,34 @@
 
     <Label text="Urzad Skarbowy" style="-fx-font-size: 18px;"/>
 
-    <TabPane VBox.vgrow="ALWAYS">
+    <TabPane fx:id="tabPane" VBox.vgrow="ALWAYS">
         <tabs>
-            <Tab text="Podatnicy">
+            <Tab fx:id="podatnicyTab" text="Podatnicy">
                 <content>
                     <fx:include source="PodatnikView.fxml"/>
                 </content>
             </Tab>
-            <Tab text="Pracownicy">
+            <Tab fx:id="pracownicyTab" text="Pracownicy">
                 <content>
                     <fx:include source="PracownikView.fxml"/>
                 </content>
             </Tab>
-            <Tab text="Mandaty">
+            <Tab fx:id="mandatyTab" text="Mandaty">
                 <content>
                     <fx:include source="MandatView.fxml"/>
                 </content>
             </Tab>
-            <Tab text="Wizyty">
+            <Tab fx:id="wizytyTab" text="Wizyty">
                 <content>
                     <fx:include source="WizytaView.fxml"/>
                 </content>
             </Tab>
-            <Tab text="Wnioski">
+            <Tab fx:id="wnioskiTab" text="Wnioski">
                 <content>
                     <fx:include source="WniosekView.fxml"/>
                 </content>
             </Tab>
-            <Tab text="Raporty">
+            <Tab fx:id="raportyTab" text="Raporty">
                 <content>
                     <fx:include source="RaportView.fxml"/>
                 </content>
