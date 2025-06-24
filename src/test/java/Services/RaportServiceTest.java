@@ -23,17 +23,20 @@ public class RaportServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        TestUtils.resetDatabaseManagerConnection();
+        System.setProperty("db.url", "jdbc:sqlite:file:memdb1?mode=memory&cache=shared");
+        DatabaseManager.closeConnection();
+        DatabaseManager.initDatabase();
+
         ms = new MandatService();
         ws = new WniosekService();
         vs = new WizytaService();
         rs = new RaportService(ms, ws, vs);
     }
 
-//    @AfterEach
-//    void tearDown() {
-//        TestUtils.closeDatabaseManagerConnection();
-//    }
+    @AfterEach
+    void tearDown() {
+        DatabaseManager.closeConnection();
+    }
 
     @Test
     void raportMandatow_filtrowanieOplaconych() throws SQLException {

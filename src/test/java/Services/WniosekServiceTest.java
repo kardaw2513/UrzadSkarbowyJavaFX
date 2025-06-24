@@ -17,14 +17,17 @@ public class WniosekServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        TestUtils.resetDatabaseManagerConnection();
+        System.setProperty("db.url", "jdbc:sqlite:file:memdb1?mode=memory&cache=shared");
+        DatabaseManager.closeConnection();
+        DatabaseManager.initDatabase();
+
         wniosekService = new WniosekService();
     }
 
-//    @AfterEach
-//    void tearDown() {
-//        TestUtils.closeDatabaseManagerConnection();
-//    }
+    @AfterEach
+    void tearDown() {
+        DatabaseManager.closeConnection();
+    }
 
     @Test
     void zlozWniosek_i_pobierzWniosek() throws SQLException {

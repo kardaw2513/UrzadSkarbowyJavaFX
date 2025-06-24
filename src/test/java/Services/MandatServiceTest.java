@@ -16,14 +16,20 @@ public class MandatServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        TestUtils.resetDatabaseManagerConnection();
+        // Ustaw URL dla in-memory shared
+        System.setProperty("db.url", "jdbc:sqlite:file:memdb1?mode=memory&cache=shared");
+        // Zamknij ewentualne wcześniejsze połączenie
+        DatabaseManager.closeConnection();
+        // Inicjalizuj tabele
+        DatabaseManager.initDatabase();
+
         service = new MandatService();
     }
 
-//    @AfterEach
-//    void tearDown() {
-//        TestUtils.closeDatabaseManagerConnection();
-//    }
+    @AfterEach
+    void tearDown() {
+        DatabaseManager.closeConnection();
+    }
 
     @Test
     void wystawMandat_i_pokazMandaty() throws SQLException {

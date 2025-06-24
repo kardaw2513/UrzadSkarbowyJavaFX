@@ -6,8 +6,8 @@ import java.sql.Connection;
 public class TestUtils {
     public static void resetDatabaseManagerConnection() throws Exception {
         // ustaw in-memory URL
-        System.out.println("[TestUtils] resetDatabaseManagerConnection: ustawiam db.url=jdbc:sqlite::memory:");
-        System.setProperty("db.url", "jdbc:sqlite::memory:");
+        System.out.println("[TestUtils] resetDatabaseManagerConnection: ustawiam db.url=jdbc:sqlite:urzad_skarbowy.db");
+        System.setProperty("db.url", "jdbc:sqlite:urzad_skarbowy.db");
         // zamknij stare połączenie
         Field connField = DatabaseManager.class.getDeclaredField("connection");
         connField.setAccessible(true);

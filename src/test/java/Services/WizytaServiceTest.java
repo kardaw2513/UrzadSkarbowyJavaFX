@@ -18,20 +18,20 @@ public class WizytaServiceTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        System.out.println("[WizytaServiceTest] @BeforeEach - reset bazy");
-        TestUtils.resetDatabaseManagerConnection();
+        System.setProperty("db.url", "jdbc:sqlite:file:memdb1?mode=memory&cache=shared");
+        DatabaseManager.closeConnection();
+        DatabaseManager.initDatabase();
+
         wizytaService = new WizytaService();
     }
 
-//    @AfterEach
-//    void tearDown() {
-//        System.out.println("[WizytaServiceTest] @AfterEach - zamykam połączenie");
-//        TestUtils.closeDatabaseManagerConnection();
-//    }
+    @AfterEach
+    void tearDown() {
+        DatabaseManager.closeConnection();
+    }
 
     @Test
     void umowWizyte_i_wizytyDlaPodatnika() throws SQLException {
-        System.out.println("[WizytaServiceTest] test umowWizyte_i_wizytyDlaPodatnika");
         Wizyta w = wizytaService.umowWizyte(pid, LocalDate.now(), pracId);
         List<Wizyta> lista = wizytaService.wizytyDlaPodatnika(pid);
         assertEquals(1, lista.size());
@@ -41,7 +41,6 @@ public class WizytaServiceTest {
 
     @Test
     void wszystkieWizyty_zwracaWszystkie() throws SQLException {
-        System.out.println("[WizytaServiceTest] test wszystkieWizyty_zwracaWszystkie");
         wizytaService.umowWizyte(pid, LocalDate.now(), pracId);
         wizytaService.umowWizyte("inny", LocalDate.now().plusDays(1), pracId);
         List<Wizyta> wszystkie = wizytaService.wszystkieWizyty();
