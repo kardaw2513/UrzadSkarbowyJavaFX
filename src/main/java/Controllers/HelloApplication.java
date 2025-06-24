@@ -45,6 +45,7 @@ public class HelloApplication extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
             Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
             Stage loginStage = new Stage();
             loginStage.setTitle("Logowanie");
             loginStage.setScene(scene);
@@ -58,6 +59,7 @@ public class HelloApplication extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/fxml/main.fxml"));
             Scene scene = new Scene(loader.load(), 800, 600);
+            scene.getStylesheets().add(HelloApplication.class.getResource("/css/application.css").toExternalForm());
             primaryStage.setTitle("Urzad Skarbowy");
             primaryStage.setScene(scene);
             primaryStage.show();
