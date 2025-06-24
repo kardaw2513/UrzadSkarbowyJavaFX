@@ -11,8 +11,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class HelloApplication extends Application {
+    private static Stage primaryStage;
+
     @Override
     public void start(Stage stage) throws Exception {
+        primaryStage = stage;
+        // inicjalizacja bazy
         System.out.println("[HelloApplication] Start aplikacji, initDatabase...");
         try {
             DatabaseManager.initDatabase();
@@ -20,7 +24,7 @@ public class HelloApplication extends Application {
             System.err.println("[HelloApplication] Błąd initDatabase: " + e.getMessage());
             e.printStackTrace();
         }
-        // Debug: listowanie tabel w bazie
+        // debug listowania tabel
         try {
             System.out.println("[HelloApplication] Sprawdzam, jakie tabele istnieją:");
             Statement stmt = DatabaseManager.getConnection().createStatement();
@@ -34,12 +38,32 @@ public class HelloApplication extends Application {
             System.err.println("[HelloApplication] Błąd przy listowaniu tabel: " + e.getMessage());
             e.printStackTrace();
         }
+        showLoginWindow();
+    }
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/fxml/main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setTitle("Urzad Skarbowy");
-        stage.setScene(scene);
-        stage.show();
+    private void showLoginWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+            Scene scene = new Scene(loader.load());
+            Stage loginStage = new Stage();
+            loginStage.setTitle("Logowanie");
+            loginStage.setScene(scene);
+            loginStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showMainWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("/fxml/main.fxml"));
+            Scene scene = new Scene(loader.load(), 800, 600);
+            primaryStage.setTitle("Urzad Skarbowy");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

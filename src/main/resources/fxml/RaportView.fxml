@@ -11,48 +11,63 @@
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
 
-    <!-- Raport mandatów -->
-    <HBox spacing="10">
-        <Label text="Mandaty:"/>
-        <CheckBox fx:id="onlyPaidCheck" text="Tylko opłacone" onAction="#onFilterMandaty"/>
-    </HBox>
-    <TableView fx:id="mandatTable" prefHeight="150">
-        <columns>
-            <TableColumn fx:id="midColumn" text="ID" prefWidth="200"/>
-            <TableColumn fx:id="mpodatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
-            <TableColumn fx:id="mkwotaColumn" text="Kwota" prefWidth="100"/>
-            <TableColumn fx:id="moplaconyColumn" text="Opłacony" prefWidth="100"/>
-            <TableColumn fx:id="mdataColumn" text="Data" prefWidth="120"/>
-        </columns>
-    </TableView>
+    <!-- Mandaty -->
+    <VBox spacing="5" VBox.vgrow="ALWAYS">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Mandaty:"/>
+            <CheckBox fx:id="onlyPaidCheck" text="Tylko opłacone" onAction="#onFilterMandaty"/>
+            <Label text="Szukaj podatnika:"/>
+            <TextField fx:id="searchMandatField" promptText="Imię lub nazwisko"/>
+        </HBox>
+        <TableView fx:id="mandatTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="midColumn" text="ID" prefWidth="150"/>
+                <TableColumn fx:id="mpodatnikNameColumn" text="Podatnik" prefWidth="200"/>
+                <TableColumn fx:id="mkwotaColumn" text="Kwota" prefWidth="100"/>
+                <TableColumn fx:id="moplaconyColumn" text="Opłacony" prefWidth="100"/>
+                <TableColumn fx:id="mdataColumn" text="Data" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
 
     <Separator/>
 
-    <!-- Raport wizyt -->
-    <Label text="Wizyty:"/>
-    <TableView fx:id="wizytaTable" prefHeight="150">
-        <columns>
-            <TableColumn fx:id="widColumn" text="ID" prefWidth="200"/>
-            <TableColumn fx:id="wpodatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
-            <TableColumn fx:id="wpracownikIdColumn" text="Pracownik ID" prefWidth="150"/>
-            <TableColumn fx:id="wdataColumn" text="Data" prefWidth="120"/>
-        </columns>
-    </TableView>
+    <!-- Wizyty -->
+    <VBox spacing="5" VBox.vgrow="ALWAYS">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Wizyty:"/>
+            <Label text="Szukaj (Podatnik/Pracownik):"/>
+            <TextField fx:id="searchWizytaField" promptText="Imię lub nazwisko"/>
+        </HBox>
+        <TableView fx:id="wizytaTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="widColumn" text="ID" prefWidth="150"/>
+                <TableColumn fx:id="wpodatnikNameColumn" text="Podatnik" prefWidth="200"/>
+                <TableColumn fx:id="wpracownikNameColumn" text="Pracownik" prefWidth="200"/>
+                <TableColumn fx:id="wdataColumn" text="Data" prefWidth="120"/>
+            </columns>
+        </TableView>
+    </VBox>
 
     <Separator/>
 
-    <!-- Raport wniosków -->
-    <HBox spacing="10">
-        <Label text="Wnioski, status:"/>
-        <ChoiceBox fx:id="statusChoice" onAction="#onFilterWnioski"/>
-    </HBox>
-    <TableView fx:id="wniosekTable" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="zidColumn" text="ID" prefWidth="200"/>
-            <TableColumn fx:id="zpodatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
-            <TableColumn fx:id="ztrescColumn" text="Treść" prefWidth="200"/>
-            <TableColumn fx:id="zstatusColumn" text="Status" prefWidth="100"/>
-            <TableColumn fx:id="zdataColumn" text="Data" prefWidth="120"/>
-        </columns>
-    </TableView>
+    <!-- Wnioski -->
+    <VBox spacing="5" VBox.vgrow="ALWAYS">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Wnioski, status:"/>
+            <ChoiceBox fx:id="statusChoice" onAction="#onFilterWnioski"/>
+            <Label text="Szukaj podatnika:"/>
+            <TextField fx:id="searchWniosekField" promptText="Imię lub nazwisko"/>
+        </HBox>
+        <TableView fx:id="wniosekTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="zidColumn" text="ID" prefWidth="150"/>
+                <TableColumn fx:id="zpodatnikNameColumn" text="Podatnik" prefWidth="200"/>
+                <TableColumn fx:id="ztrescColumn" text="Treść" prefWidth="250"/>
+                <TableColumn fx:id="zstatusColumn" text="Status" prefWidth="100"/>
+                <TableColumn fx:id="zdataColumn" text="Data" prefWidth="120"/>
+                <TableColumn fx:id="zactionColumn" text="Akcja" prefWidth="150"/>
+            </columns>
+        </TableView>
+    </VBox>
 </VBox>

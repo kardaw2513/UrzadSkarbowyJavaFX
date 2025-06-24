@@ -12,18 +12,22 @@
     </padding>
 
     <HBox spacing="10">
+        <Label text="Szukaj (imię/nazwisko):"/>
+        <TextField fx:id="searchField" promptText="Wpisz imię lub nazwisko podatnika"/>
+    </HBox>
+    <HBox spacing="10" alignment="CENTER_LEFT">
         <Label text="Podatnik:"/>
         <ComboBox fx:id="podatnikCombo" prefWidth="200"/>
-        <Label text="Treść:"/>
-        <TextField fx:id="trescField" promptText="Treść wniosku" prefWidth="300"/>
-        <Button text="Złóż wniosek" onAction="#onZloz"/>
+        <Label text="Treść wniosku:"/>
+        <TextArea fx:id="trescField" promptText="Treść wniosku" prefRowCount="3" prefWidth="300"/>
+        <Button text="Złóż wniosek" fx:id="btnZloz" onAction="#onZloz"/>
     </HBox>
 
     <TableView fx:id="table" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="200"/>
-            <TableColumn fx:id="podatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
-            <TableColumn fx:id="trescColumn" text="Treść" prefWidth="200"/>
+            <TableColumn fx:id="podatnikNameColumn" text="Podatnik" prefWidth="200"/>
+            <TableColumn fx:id="trescColumn" text="Treść" prefWidth="250"/>
             <TableColumn fx:id="statusColumn" text="Status" prefWidth="100"/>
             <TableColumn fx:id="dataColumn" text="Data" prefWidth="120"/>
             <TableColumn fx:id="actionColumn" text="Akcja" prefWidth="150"/>

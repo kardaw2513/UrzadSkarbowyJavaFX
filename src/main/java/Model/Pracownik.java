@@ -12,26 +12,13 @@ public class Pracownik {
         this.imie = imie;
         this.nazwisko = nazwisko;
     }
-
-    // Konstruktor z ID
+    // nowy:
     public Pracownik(String id, String imie, String nazwisko) {
         this.id = id;
         this.imie = imie;
         this.nazwisko = nazwisko;
     }
-
-    public String getId() {
-        return id;
-    }
-    public String getImie() {
-        return imie;
-    }
-    public String getNazwisko() {
-        return nazwisko;
-    }
-
-    @Override
-    public String toString() {
-        return imie + " " + nazwisko;
-    }
+    public String getId() { return id; }
+    public String getImie() { return imie; }
+    public String getNazwisko() { return nazwisko; }
 }

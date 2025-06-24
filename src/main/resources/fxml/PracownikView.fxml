@@ -12,11 +12,15 @@
     </padding>
 
     <HBox spacing="10">
+        <Label text="Szukaj:"/>
+        <TextField fx:id="searchField" promptText="Imię lub nazwisko"/>
+    </HBox>
+    <HBox spacing="10">
         <Label text="Imię:"/>
         <TextField fx:id="imieField" promptText="Imię"/>
         <Label text="Nazwisko:"/>
         <TextField fx:id="nazwiskoField" promptText="Nazwisko"/>
-        <Button text="Dodaj" onAction="#onAddPracownik"/>
+        <Button text="Dodaj" fx:id="btnAdd" onAction="#onAddPracownik"/>
     </HBox>
 
     <TableView fx:id="table" VBox.vgrow="ALWAYS">

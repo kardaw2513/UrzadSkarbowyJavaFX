@@ -11,6 +11,10 @@
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
 
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Szukaj (Podatnik/Pracownik):"/>
+        <TextField fx:id="searchField" promptText="Wpisz imię lub nazwisko"/>
+    </HBox>
     <HBox spacing="10">
         <Label text="Podatnik:"/>
         <ComboBox fx:id="podatnikCombo" prefWidth="180"/>
@@ -18,14 +22,14 @@
         <ComboBox fx:id="pracownikCombo" prefWidth="180"/>
         <Label text="Data:"/>
         <DatePicker fx:id="datePicker"/>
-        <Button text="Umów" onAction="#onUmow"/>
+        <Button text="Umów" fx:id="btnUmow" onAction="#onUmow"/>
     </HBox>
 
     <TableView fx:id="table" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="200"/>
-            <TableColumn fx:id="podatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
-            <TableColumn fx:id="pracownikIdColumn" text="Pracownik ID" prefWidth="150"/>
+            <TableColumn fx:id="podatnikNameColumn" text="Podatnik" prefWidth="200"/>
+            <TableColumn fx:id="pracownikNameColumn" text="Pracownik" prefWidth="200"/>
             <TableColumn fx:id="dataColumn" text="Data" prefWidth="120"/>
         </columns>
     </TableView>

@@ -12,17 +12,21 @@
     </padding>
 
     <HBox spacing="10">
+        <Label text="Szukaj (imię/nazwisko):"/>
+        <TextField fx:id="searchField" promptText="Wpisz imię lub nazwisko"/>
+    </HBox>
+    <HBox spacing="10">
         <Label text="Podatnik:"/>
         <ComboBox fx:id="podatnikCombo" prefWidth="200"/>
         <Label text="Kwota:"/>
         <TextField fx:id="kwotaField" promptText="Kwota"/>
-        <Button text="Wystaw mandat" onAction="#onWystawMandat"/>
+        <Button text="Wystaw mandat" fx:id="btnWystaw" onAction="#onWystawMandat"/>
     </HBox>
 
     <TableView fx:id="table" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="200"/>
-            <TableColumn fx:id="podatnikIdColumn" text="Podatnik ID" prefWidth="150"/>
+            <TableColumn fx:id="podatnikNameColumn" text="Podatnik" prefWidth="200"/>
             <TableColumn fx:id="kwotaColumn" text="Kwota" prefWidth="100"/>
             <TableColumn fx:id="oplaconyColumn" text="Opłacony" prefWidth="100"/>
             <TableColumn fx:id="dataColumn" text="Data" prefWidth="120"/>

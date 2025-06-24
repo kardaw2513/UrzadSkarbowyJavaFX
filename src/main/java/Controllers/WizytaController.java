@@ -3,17 +3,15 @@ package Controllers;
 import Model.Podatnik;
 import Model.Pracownik;
 import Model.Wizyta;
+import Services.CurrentSession;
 import Services.WizytaService;
 import Services.dao.PodatnikDAO;
 import Services.dao.PracownikDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.SQLException;
@@ -24,55 +22,123 @@ public class WizytaController {
     @FXML private ComboBox<Podatnik> podatnikCombo;
     @FXML private ComboBox<Pracownik> pracownikCombo;
     @FXML private DatePicker datePicker;
+    @FXML private TextField searchField;
     @FXML private TableView<Wizyta> table;
     @FXML private TableColumn<Wizyta, String> idColumn;
-    @FXML private TableColumn<Wizyta, String> podatnikIdColumn;
-    @FXML private TableColumn<Wizyta, String> pracownikIdColumn;
+    @FXML private TableColumn<Wizyta, String> podatnikNameColumn;
+    @FXML private TableColumn<Wizyta, String> pracownikNameColumn;
     @FXML private TableColumn<Wizyta, String> dataColumn;
+    @FXML private Button btnUmow;
 
     private final PodatnikDAO podatnikDAO = new PodatnikDAO();
     private final PracownikDAO pracownikDAO = new PracownikDAO();
     private final WizytaService service = new WizytaService();
-    private final ObservableList<Wizyta> data = FXCollections.observableArrayList();
+    private final ObservableList<Wizyta> masterData = FXCollections.observableArrayList();
+    private final FilteredList<Wizyta> filteredData = new FilteredList<>(masterData, p->true);
     private final ObservableList<Podatnik> podatnicy = FXCollections.observableArrayList();
     private final ObservableList<Pracownik> pracownicy = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
         idColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getId()));
-        podatnikIdColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPodatnikId()));
-        pracownikIdColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getPracownikId()));
+        podatnikNameColumn.setCellValueFactory(cell -> {
+            try {
+                return new SimpleStringProperty(
+                        podatnikDAO.findById(cell.getValue().getPodatnikId())
+                                .map(p->p.getImie()+" "+p.getNazwisko()).orElse(cell.getValue().getPodatnikId()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new SimpleStringProperty(cell.getValue().getPodatnikId());
+            }
+        });
+        pracownikNameColumn.setCellValueFactory(cell -> {
+            try {
+                return new SimpleStringProperty(
+                        pracownikDAO.findById(cell.getValue().getPracownikId())
+                                .map(p->p.getImie()+" "+p.getNazwisko()).orElse(cell.getValue().getPracownikId()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return new SimpleStringProperty(cell.getValue().getPracownikId());
+            }
+        });
         dataColumn.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getData().toString()));
-        table.setItems(data);
-        loadCombos();
+        table.setItems(filteredData);
+
+        setupCombos();
         loadData();
+        setupSearch();
+
+        // jeżeli rola PODATNIK: użytkownik może umawiać wizyty tylko dla siebie, ale widzi tylko swoje wizyty
+        if (CurrentSession.isPodatnik()) {
+            btnUmow.setDisable(false);
+        }
+        if (CurrentSession.isPodatnik()) {
+            // podatnikCombo ograniczony do siebie, pracownikCombo do wszystkich (mogą wybrać dowolnego pracownika)
+            // tabela tylko jego wizyty
+        }
     }
 
-    private void loadCombos() {
+    private void setupCombos() {
         podatnicy.clear();
         pracownicy.clear();
         try {
-            List<Podatnik> listP = podatnikDAO.findAll();
-            List<Pracownik> listPr = pracownikDAO.findAll();
-            podatnicy.addAll(listP);
-            pracownicy.addAll(listPr);
+            if (CurrentSession.isPodatnik()) {
+                podatnikDAO.findById(CurrentSession.getUserId()).ifPresent(podatnicy::add);
+            } else {
+                podatnicy.addAll(podatnikDAO.findAll());
+            }
+            pracownicy.addAll(pracownikDAO.findAll());
             podatnikCombo.setItems(podatnicy);
             pracownikCombo.setItems(pracownicy);
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Błąd ładowania", "Nie udało się wczytać listy podatników/pracowników:\n" + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Błąd ładowania", "Nie udało się wczytać list:\n" + e.getMessage());
         }
     }
 
     private void loadData() {
-        data.clear();
+        masterData.clear();
         try {
             List<Wizyta> list = service.wszystkieWizyty();
-            data.addAll(list);
+            if (CurrentSession.isPodatnik()) {
+                list.removeIf(w -> !w.getPodatnikId().equals(CurrentSession.getUserId()));
+            }
+            masterData.addAll(list);
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Błąd ładowania", "Nie udało się wczytać wizyt:\n" + e.getMessage());
         }
+    }
+
+    private void setupSearch() {
+        searchField.textProperty().addListener((obs, oldV, newV) -> {
+            String fl = newV.trim().toLowerCase();
+            if (fl.isEmpty()) {
+                filteredData.setPredicate(w -> {
+                    if (CurrentSession.isPodatnik()) {
+                        return w.getPodatnikId().equals(CurrentSession.getUserId());
+                    }
+                    return true;
+                });
+            } else {
+                filteredData.setPredicate(w -> {
+                    try {
+                        Podatnik p = podatnikDAO.findById(w.getPodatnikId()).orElse(null);
+                        Pracownik pr = pracownikDAO.findById(w.getPracownikId()).orElse(null);
+                        boolean matchP = p != null && (p.getImie()+" "+p.getNazwisko()).toLowerCase().contains(fl);
+                        boolean matchPr = pr != null && (pr.getImie()+" "+pr.getNazwisko()).toLowerCase().contains(fl);
+                        if (!(matchP || matchPr)) return false;
+                        if (CurrentSession.isPodatnik()) {
+                            return w.getPodatnikId().equals(CurrentSession.getUserId());
+                        }
+                        return true;
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                });
+            }
+        });
     }
 
     @FXML
@@ -90,7 +156,7 @@ public class WizytaController {
         }
         try {
             Wizyta w = service.umowWizyte(p.getId(), d, pr.getId());
-            data.add(w);
+            masterData.add(w);
             datePicker.setValue(null);
         } catch (SQLException e) {
             e.printStackTrace();
