@@ -1,24 +1,39 @@
 .root {
     -fx-font-family: 'Segoe UI', sans-serif;
     -fx-font-size: 14px;
-    -fx-background-color: #f4f6f8;
-    -fx-text-fill: #1f1f1f;
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #e0e0e0;
 }
 
 /* === Label === */
 .label {
-    -fx-text-fill: #1a1a1a;
+    -fx-text-fill: #e0e0e0;
 }
 
 /* === TextField & TextArea === */
-.text-field,
-.text-area {
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-color: #ccc;
+.text-field {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #555555;
     -fx-border-width: 1;
     -fx-padding: 6;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+}
+
+.text-area, .text-area .content {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+}
+
+#trescField {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
+}
+
+#trescField .content {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: #e0e0e0;
 }
 
 /* === Button === */
@@ -43,32 +58,43 @@
 /* === RadioButton & CheckBox === */
 .radio-button,
 .check-box {
-    -fx-text-fill: #333;
+    -fx-text-fill: #e0e0e0;
 }
 
 /* === ComboBox & ChoiceBox === */
 .combo-box,
 .choice-box {
-    -fx-background-color: white;
-    -fx-border-color: #ccc;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
+    -fx-background-color: #3c3f41;
+    -fx-border-color: #555555;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
     -fx-padding: 4;
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Usuń podświetlenie na niebiesko w ComboBox */
+.combo-box .list-cell:filled:selected,
+.combo-box .list-cell:filled:selected:hover,
+.combo-box .list-cell:hover {
+    -fx-background-color: #555555;
+    -fx-text-fill: #e0e0e0;
 }
 
 /* === TableView === */
 .table-view {
-    -fx-background-color: #ffffff;
-    -fx-table-cell-border-color: #e1e1e1;
-    -fx-border-color: #d0d0d0;
+    -fx-background-color: #3c3f41;
+    -fx-table-cell-border-color: #555555;
+    -fx-border-color: #555555;
     -fx-border-radius: 6;
     -fx-background-radius: 6;
 }
 
+/* Pasek kolumn w tabeli - ciemny */
 .table-view .column-header-background {
     -fx-background-color: #28527a;
 }
 
+/* Nagłówki kolumn */
 .table-view .column-header,
 .table-view .filler {
     -fx-size: 32;
@@ -81,12 +107,31 @@
     -fx-font-weight: bold;
 }
 
-.table-row-cell:filled:selected {
-    -fx-background-color: #cce5ff;
+/* Wiersze - naprzemiennie ciemniejsze i jaśniejsze odcienie */
+.table-row-cell:even {
+    -fx-background-color: #323436;
 }
 
+.table-row-cell:odd {
+    -fx-background-color: #3c3f41;
+}
+
+/* Podświetlenie zaznaczonego wiersza */
+.table-row-cell:filled:selected,
+.table-row-cell:filled:selected:hover {
+    -fx-background-color: #5a9bd5; /* jasny niebieski */
+    -fx-text-fill: black; /* czarny tekst na zaznaczonym tle */
+}
+
+/* Komórki tabeli */
 .table-cell {
     -fx-padding: 6;
+    -fx-text-fill: #e0e0e0;
+}
+
+.table-cell:filled:selected, .table-cell:filled:selected:hover {
+    -fx-background-color: #5a9bd5;
+    -fx-text-fill: black;
 }
 
 /* === TabPane === */
@@ -94,15 +139,21 @@
     -fx-tab-min-width: 100px;
     -fx-tab-max-width: 160px;
     -fx-tab-min-height: 32px;
-    -fx-tab-background-color: #d9e2ec;
+    -fx-tab-background-color: #2b2b2b;
     -fx-tab-border-color: transparent;
 }
 
+/* Zakładki ciemne tło i jasne litery */
+.tab-pane .tab {
+    -fx-background-color: #3c3f41;
+}
+
 .tab-pane .tab-label {
-    -fx-text-fill: #1a1a1a;
+    -fx-text-fill: #e0e0e0;
     -fx-font-weight: bold;
 }
 
+/* Zaznaczona zakładka niebieska z białym tekstem */
 .tab-pane .tab:selected {
     -fx-background-color: #28527a;
 }
@@ -113,15 +164,16 @@
 
 /* === Separator === */
 .separator {
-    -fx-background-color: #cccccc;
+    -fx-background-color: #555555;
 }
 
 /* === DatePicker === */
 .date-picker {
-    -fx-background-color: white;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-border-color: #ccc;
+    -fx-background-color: #3c3f41;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-color: #555555;
+    -fx-text-fill: #e0e0e0;
 }
 
 /* === ScrollPane / Scrollbar === */
@@ -130,23 +182,10 @@
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #888;
+    -fx-background-color: #888888;
     -fx-background-radius: 6;
 }
 
 .scroll-bar .thumb:hover {
-    -fx-background-color: #666;
+    -fx-background-color: #666666;
 }
-
-/* Poprawa kontrastu dla zaznaczonych wierszy w TableView */
-.table-row-cell:filled:selected, .table-row-cell:filled:selected:hover {
-    -fx-background-color: #5a9bd5; /* ciemniejszy niebieski */
-    -fx-text-fill: black; /* tekst czarny, lepiej widoczny */
-}
-
-/* Poprawa wyglądu komórek, gdy zaznaczone */
-.table-cell:filled:selected, .table-cell:filled:selected:hover {
-    -fx-background-color: #5a9bd5;
-    -fx-text-fill: black;
-}
-
