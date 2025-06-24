@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox spacing="10" padding="10" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.RaportController">
+    <TitledPane text="Mandaty">
+        <VBox spacing="5">
+            <CheckBox fx:id="onlyPaidCheck" text="Tylko opłacone" onAction="#onFilterMandaty"/>
+            <TableView fx:id="mandatTable">
+                <columns>
+                    <TableColumn text="ID" fx:id="midColumn"/>
+                    <TableColumn text="Podatnik ID" fx:id="mpodatnikIdColumn"/>
+                    <TableColumn text="Kwota" fx:id="mkwotaColumn"/>
+                    <TableColumn text="Opłacony" fx:id="moplaconyColumn"/>
+                    <TableColumn text="Data" fx:id="mdataColumn"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </TitledPane>
+    <TitledPane text="Wizyty">
+        <TableView fx:id="wizytaTable">
+            <columns>
+                <TableColumn text="ID" fx:id="widColumn"/>
+                <TableColumn text="Podatnik ID" fx:id="wpodatnikIdColumn"/>
+                <TableColumn text="Pracownik ID" fx:id="wpracownikIdColumn"/>
+                <TableColumn text="Data" fx:id="wdataColumn"/>
+            </columns>
+        </TableView>
+    </TitledPane>
+    <TitledPane text="Wnioski">
+        <VBox spacing="5">
+            <HBox spacing="5">
+                <Label text="Status:"/>
+                <ChoiceBox fx:id="statusChoice" onAction="#onFilterWnioski"/>
+            </HBox>
+            <TableView fx:id="wniosekTable">
+                <columns>
+                    <TableColumn text="ID" fx:id="zidColumn"/>
+                    <TableColumn text="Podatnik ID" fx:id="zpodatnikIdColumn"/>
+                    <TableColumn text="Treść" fx:id="ztrescColumn"/>
+                    <TableColumn text="Status" fx:id="zstatusColumn"/>
+                    <TableColumn text="Data" fx:id="zdataColumn"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </TitledPane>
+</VBox>

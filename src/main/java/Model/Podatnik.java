@@ -13,7 +13,26 @@ public class Podatnik {
         this.nazwisko = nazwisko;
     }
 
-    public String getId() { return id; }
-    public String getImie() { return imie; }
-    public String getNazwisko() { return nazwisko; }
+    // Konstruktor z ID (przy odczycie z bazy)
+    public Podatnik(String id, String imie, String nazwisko) {
+        this.id = id;
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public String getImie() {
+        return imie;
+    }
+    public String getNazwisko() {
+        return nazwisko;
+    }
+
+    @Override
+    public String toString() {
+        // Użyteczne do ComboBoxów: pokaże “Imię Nazwisko”
+        return imie + " " + nazwisko;
+    }
 }

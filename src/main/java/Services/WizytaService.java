@@ -1,30 +1,29 @@
 package Services;
 
 import Model.Wizyta;
+import Services.dao.WizytaDAO;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class WizytaService {
-    private final Map<String, Wizyta> repo = new HashMap<>();
+    private final WizytaDAO dao = new WizytaDAO();
 
-    public Wizyta umowWizyte(String podatnikId, LocalDate data, String pracownikId) {
+    public Wizyta umowWizyte(String podatnikId, LocalDate data, String pracownikId) throws SQLException {
         Wizyta w = new Wizyta(podatnikId, data, pracownikId);
-        repo.put(w.getId(), w);
+        dao.save(w);
         return w;
     }
 
-    public List<Wizyta> wszystkieWizyty() {
-        return new ArrayList<>(repo.values());
+    public List<Wizyta> wszystkieWizyty() throws SQLException {
+        return dao.findAll();
     }
 
-    public List<Wizyta> wizytyDlaPodatnika(String podatnikId) {
-        return repo.values().stream()
-                .filter(w -> w.getPodatnikId().equals(podatnikId))
-                .collect(Collectors.toList());
+    public List<Wizyta> wizytyDlaPodatnika(String podatnikId) throws SQLException {
+        return dao.findByPodatnik(podatnikId);
     }
+
+    // Jeśli potrzebujesz update/delete, dodaj w DAO i tu odpowiednie metody
 }

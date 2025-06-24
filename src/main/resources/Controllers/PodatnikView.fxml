@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox spacing="10" padding="10" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.PodatnikController">
+    <HBox spacing="5">
+        <TextField fx:id="imieField" promptText="Imię"/>
+        <TextField fx:id="nazwiskoField" promptText="Nazwisko"/>
+        <Button text="Dodaj" onAction="#onAddPodatnik"/>
+    </HBox>
+    <TableView fx:id="table">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn"/>
+            <TableColumn text="Imię" fx:id="imieColumn"/>
+            <TableColumn text="Nazwisko" fx:id="nazwiskoColumn"/>
+        </columns>
+    </TableView>
+</VBox>

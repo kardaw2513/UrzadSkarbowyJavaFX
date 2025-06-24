@@ -1,10 +1,8 @@
-module Controllers {
+module com.urzadskarbowy {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
-    requires org.kordamp.ikonli.javafx;
-    requires org.kordamp.bootstrapfx.core;
-
-    exports Controllers;
     opens Controllers to javafx.fxml;
+    opens Model to javafx.fxml;
 }

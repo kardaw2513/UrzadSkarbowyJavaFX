@@ -18,11 +18,30 @@ public class Mandat {
         this.dataWystawienia = LocalDate.now();
     }
 
-    public String getId() { return id; }
-    public String getPodatnikId() { return podatnikId; }
-    public double getKwota() { return kwota; }
-    public boolean isOplacony() { return oplacony; }
-    public LocalDate getDataWystawienia() { return dataWystawienia; }
+    // Konstruktor z wszystkimi polami (przy odczycie z bazy)
+    public Mandat(String id, String podatnikId, double kwota, boolean oplacony, LocalDate dataWystawienia) {
+        this.id = id;
+        this.podatnikId = podatnikId;
+        this.kwota = kwota;
+        this.oplacony = oplacony;
+        this.dataWystawienia = dataWystawienia;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public String getPodatnikId() {
+        return podatnikId;
+    }
+    public double getKwota() {
+        return kwota;
+    }
+    public boolean isOplacony() {
+        return oplacony;
+    }
+    public LocalDate getDataWystawienia() {
+        return dataWystawienia;
+    }
 
     public void zaplac() {
         this.oplacony = true;

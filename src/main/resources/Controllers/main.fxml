@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.MainController">
+    <top>
+        <Label text="Urzad Skarbowy System" style="-fx-font-size: 18px; -fx-padding: 10;"/>
+    </top>
+    <center>
+        <TabPane fx:id="tabPane">
+            <tabs>
+                <Tab text="Podatnicy">
+                    <fx:include source="PodatnikView.fxml"/>
+                </Tab>
+                <Tab text="Pracownicy">
+                    <fx:include source="PracownikView.fxml"/>
+                </Tab>
+                <Tab text="Mandaty">
+                    <fx:include source="MandatView.fxml"/>
+                </Tab>
+                <Tab text="Wizyty">
+                    <fx:include source="WizytaView.fxml"/>
+                </Tab>
+                <Tab text="Wnioski">
+                    <fx:include source="WniosekView.fxml"/>
+                </Tab>
+                <Tab text="Raporty">
+                    <fx:include source="RaportView.fxml"/>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>

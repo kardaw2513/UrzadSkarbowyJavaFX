@@ -16,8 +16,24 @@ public class Wizyta {
         this.pracownikId = pracownikId;
     }
 
-    public String getId() { return id; }
-    public String getPodatnikId() { return podatnikId; }
-    public LocalDate getData() { return data; }
-    public String getPracownikId() { return pracownikId; }
+    // Konstruktor z ID (przy odczycie z bazy)
+    public Wizyta(String id, String podatnikId, LocalDate data, String pracownikId) {
+        this.id = id;
+        this.podatnikId = podatnikId;
+        this.data = data;
+        this.pracownikId = pracownikId;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public String getPodatnikId() {
+        return podatnikId;
+    }
+    public LocalDate getData() {
+        return data;
+    }
+    public String getPracownikId() {
+        return pracownikId;
+    }
 }

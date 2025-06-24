@@ -1,34 +1,37 @@
 package Services;
 
 import Model.Mandat;
+import Services.dao.MandatDAO;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class MandatService {
-    private final Map<String, Mandat> repo = new HashMap<>();
+    private final MandatDAO dao = new MandatDAO();
 
-    public Mandat wystawMandat(String podatnikId, double kwota) {
+    public Mandat wystawMandat(String podatnikId, double kwota) throws SQLException {
         Mandat m = new Mandat(podatnikId, kwota);
-        repo.put(m.getId(), m);
+        dao.save(m);
         return m;
     }
 
-    public void zaplacMandat(String mandatId) {
-        Mandat m = repo.get(mandatId);
-        if (m != null) m.zaplac();
+    public void zaplacMandat(String mandatId) throws SQLException {
+        Optional<Mandat> opt = dao.findById(mandatId);
+        if (opt.isPresent()) {
+            Mandat m = opt.get();
+            if (!m.isOplacony()) {
+                m.zaplac();
+                dao.update(m);
+            }
+        }
     }
 
-    public List<Mandat> pokazMandaty(String podatnikId) {
-        return repo.values().stream()
-                .filter(m -> m.getPodatnikId().equals(podatnikId))
-                .collect(Collectors.toList());
+    public List<Mandat> pokazMandaty(String podatnikId) throws SQLException {
+        return dao.findByPodatnik(podatnikId);
     }
 
-    public List<Mandat> wszystkieMandaty() {
-        return new ArrayList<>(repo.values());
+    public List<Mandat> wszystkieMandaty() throws SQLException {
+        return dao.findAll();
     }
 }
