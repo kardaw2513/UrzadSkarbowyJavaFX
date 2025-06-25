@@ -1,5 +1,7 @@
 package Controllers;
 
+import Model.Podatnik;
+import Model.Pracownik;
 import Services.CurrentSession;
 import Services.dao.PodatnikDAO;
 import Services.dao.PracownikDAO;
@@ -15,7 +17,7 @@ import java.util.List;
 public class LoginController {
     @FXML private RadioButton rbPodatnik;
     @FXML private RadioButton rbPracownik;
-    @FXML private ComboBox<Controllers.LoginController.UserItem> userCombo;
+    @FXML private ComboBox<UserItem> userCombo;
     @FXML private Button btnLogin;
 
     private ToggleGroup roleGroup = new ToggleGroup();
@@ -43,8 +45,10 @@ public class LoginController {
     private void loadUsersAsPodatnik() {
         users.clear();
         try {
-            List<Model.Podatnik> list = podatnikDAO.findAll();
-            for (Model.Podatnik p : list) {
+            List<Podatnik> list = podatnikDAO.findAll();
+            // Jeśli lista podatników jest pusta, można tu ewentualnie dodać domyślnego podatnika.
+            // Na razie pomijamy automatyczne dodawanie podatnika.
+            for (Podatnik p : list) {
                 users.add(new UserItem(p.getId(), p.getImie() + " " + p.getNazwisko()));
             }
         } catch (SQLException e) {
@@ -52,22 +56,37 @@ public class LoginController {
             showAlert(Alert.AlertType.ERROR, "Błąd", "Nie udało się pobrać listy podatników:\n" + e.getMessage());
         }
         userCombo.setItems(users);
-        if (!users.isEmpty()) userCombo.setValue(users.get(0));
+        if (!users.isEmpty()) {
+            userCombo.setValue(users.get(0));
+        } else {
+            userCombo.setValue(null);
+        }
     }
 
     private void loadUsersAsPracownik() {
         users.clear();
         try {
-            List<Model.Pracownik> list = pracownikDAO.findAll();
-            for (Model.Pracownik p : list) {
+            List<Pracownik> list = pracownikDAO.findAll();
+            if (list.isEmpty()) {
+                // jeśli brak pracowników, dodaj domyślnego "Karol Kozieł"
+                Pracownik defaultP = new Pracownik("Karol", "Kozieł");
+                pracownikDAO.save(defaultP);
+                // ponownie pobierz listę
+                list = pracownikDAO.findAll();
+            }
+            for (Pracownik p : list) {
                 users.add(new UserItem(p.getId(), p.getImie() + " " + p.getNazwisko()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Błąd", "Nie udało się pobrać listy pracowników:\n" + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Błąd", "Nie udało się pobrać/dodać domyślnego pracownika:\n" + e.getMessage());
         }
         userCombo.setItems(users);
-        if (!users.isEmpty()) userCombo.setValue(users.get(0));
+        if (!users.isEmpty()) {
+            userCombo.setValue(users.get(0));
+        } else {
+            userCombo.setValue(null);
+        }
     }
 
     @FXML
@@ -84,11 +103,9 @@ public class LoginController {
         }
         // zamykamy okno logowania i pokazujemy główny
         try {
-            // w HelloApplication po uruchomieniu zawsze pokazujemy główny po zalogowaniu,
-            // tutaj jedynie zamykamy scenę logowania:
             Stage stage = (Stage) btnLogin.getScene().getWindow();
             stage.close();
-            // HelloApplication otworzy główny widok
+            // Zakładam, że HelloApplication ma statyczną metodę showMainWindow()
             HelloApplication.showMainWindow();
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,7 +125,8 @@ public class LoginController {
         public final String id;
         public final String display;
         public UserItem(String id, String display) {
-            this.id = id; this.display = display;
+            this.id = id;
+            this.display = display;
         }
         @Override public String toString() { return display; }
     }
