@@ -46,14 +46,19 @@ public class LoginController {
         users.clear();
         try {
             List<Podatnik> list = podatnikDAO.findAll();
-            // Jeśli lista podatników jest pusta, można tu ewentualnie dodać domyślnego podatnika.
-            // Na razie pomijamy automatyczne dodawanie podatnika.
+            if (list.isEmpty()) {
+                // jeśli brak podatników, dodaj domyślnego "Jan Kowalski"
+                Podatnik defaultP = new Podatnik("Jan", "Kowalski");
+                podatnikDAO.save(defaultP);
+                // ponownie pobierz listę
+                list = podatnikDAO.findAll();
+            }
             for (Podatnik p : list) {
                 users.add(new UserItem(p.getId(), p.getImie() + " " + p.getNazwisko()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Błąd", "Nie udało się pobrać listy podatników:\n" + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Błąd", "Nie udało się pobrać/dodać domyślnego podatnika:\n" + e.getMessage());
         }
         userCombo.setItems(users);
         if (!users.isEmpty()) {
