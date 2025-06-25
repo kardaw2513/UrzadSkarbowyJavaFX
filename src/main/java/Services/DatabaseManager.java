@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
 public class DatabaseManager {
-    private static final String DB_URL = "jdbc:sqlite:C:/Users/User/Desktop/docs/Java/UrzadSlarbowyGUI/urzad_skarbowy.db";
+    private static final String DB_URL = "jdbc:sqlite:urzad_skarbowy.db";
     private static Connection connection;
 
     public static Connection getConnection() throws SQLException {
